@@ -1,7 +1,8 @@
 package com.aliergul.app.user;
 
-import com.aliergul.app.dao.user.pojo.UserUpdate;
+
 import com.aliergul.app.error.NotFoundException;
+import com.aliergul.app.user.pojo.UserUpdate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,12 +34,10 @@ public class UserService {
 
 
 public Page<UserEntity> getUsers( Pageable page, UserEntity user) {
-	if(user!=null) {
-		
-		return userRepository.findByUsernameNot(user.getUsername(), page);
-	}
-	
-	return userRepository.findAll(page);
+
+	return user==null ?
+			userRepository.findAll(page):
+			userRepository.findByUsernameNot(user.getUsername(), page);
 }
 
 

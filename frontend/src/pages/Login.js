@@ -13,7 +13,7 @@ const LoginPage = (props) =>{
     const [password,setPassword]=useState();
     const [error,setError]=useState();
     const dispatch = useDispatch();
-    const pendingApiCall = useApiProgress('/api/1.0/auth');
+    const pendingApiCall = useApiProgress('post','/api/1.0/auth');
     
     useEffect(()=>{
         setError(undefined);
@@ -59,7 +59,7 @@ const LoginPage = (props) =>{
             }
 
            
-            <ButtonWithProgress text= {t('Login')} onClick={onClickLogin} disabled={!buttonEnabled || pendingApiCall} pendingApiCall={pendingApiCall}/>
+            <ButtonWithProgress className="btn btn-primary" text= {t('Login')} onClick={onClickLogin} disabled={!buttonEnabled || pendingApiCall} pendingApiCall={pendingApiCall}/>
            
          
                        

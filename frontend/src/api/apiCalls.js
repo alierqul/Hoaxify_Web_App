@@ -9,10 +9,7 @@ export const login = creds => {
    return axios.post('/api/1.0/auth', { },{auth: creds });
  };
 
- export const getMyTodoList = (username)=> {
-  const path = username && `/api/1.0/users/${username}/todo`;
-  return axios.get(path);
- };
+
 
 
  export const getUsers = (page=0,size=3) =>{
@@ -32,6 +29,11 @@ export const setAuthorizationHeader = ({isLoggedIn, username, password }) => {
  export const getUser= username =>{
    return axios.get(`/api/1.0/users/${username}`);
  };
+
+ export const updateUser= (username,body) =>{
+  return axios.put(`/api/1.0/users/${username}`,body);
+};
+
 
 export const changeLanguage = language => {
    axios.defaults.headers['accept-language'] = language;

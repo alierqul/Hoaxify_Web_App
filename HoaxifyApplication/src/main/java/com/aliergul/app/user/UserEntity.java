@@ -29,7 +29,7 @@ public class UserEntity implements UserDetails {
   private static final long serialVersionUID = 9066911572038657025L;
   
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
     
     @UniqueUsername

@@ -55,8 +55,8 @@ const UserRegisterPage = props=>{
 
     const {t} =useTranslation();
     const {  username:usernameError,  name:nameError,  password:passwordError} = errors;
-    const pendingApiCallRegister = useApiProgress('/api/1.0/users');
-    const pendingApiCallLogin = useApiProgress('/api/1.0/auth');
+    const pendingApiCallRegister = useApiProgress('post','/api/1.0/users');
+    const pendingApiCallLogin = useApiProgress('post','/api/1.0/auth');
     const pendingApiCall = pendingApiCallRegister|| pendingApiCallLogin;
     let passwordReError;
     if(form.password!==form.repassword){
@@ -75,6 +75,7 @@ const UserRegisterPage = props=>{
             <Input label= {t('Password Repeat')} type="password" error={passwordReError} name="repassword"onChange={onChangeForm}></Input>
 
             <ButtonWithProgress 
+            className="btn btn-primary"
             text= {t('Sign Up')}
              onClick={onClickRegister} 
              disabled={pendingApiCall || passwordReError!==undefined} 

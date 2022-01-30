@@ -4,17 +4,34 @@ import {useSelector} from 'react-redux';
 import ProfileImgWithDefault from './ProfileImgWithDefault';
 import { useTranslation } from 'react-i18next';
 import Input from './input';
+import {updateUser} from '../api/apiCalls';
+import { useApiProgress } from '../shared/ApiProgress';
+import ButtonWithProgress from './ButtonWithProgress';
 //rsc snippet kısayolu
 
 const ProfileCard = props => {
    const [inEditMode,setInEditMode]=useState(false);
    const [updatedDisplayName,setUpdatedDisplaayName]=useState();
    const routePArams=useParams();
-    const pathUserName = routePArams.username;
-    const {user} =props;
+   const [user,setUser]=useState({});
+   const [editable,setEditable]=useState(false);
+   const {loggedInUsername}=useSelector(store=>({loggedInUsername:store.username}));
+   useEffect(()=>{
+      setUser(props.user);
+   },[props.user]);
+
+   const pathUserName = routePArams.username;
+   useEffect(()=>{
+     
+      setEditable(pathUserName===loggedInUsername);
+     
+   },[pathUserName,loggedInUsername]);
+    
+    
+
     const {username, name, image}=user;
     const {t}=useTranslation();
-    const {loggedInUsername}=useSelector(store=>({loggedInUsername:store.username}));
+   
     let message= "We Connot Edit";
     let defaultName=name;
 
@@ -26,13 +43,23 @@ const ProfileCard = props => {
      }
     },[inEditMode,name]);
 
-   const onClickSave= ()=>{
-      console.log(updatedDisplayName);
-   }
+   const onClickSave=async ()=>{
+      const body={
+         name:updatedDisplayName
+      };
+      try{
+         const response=await updateUser(username,body);
+         setUser(response.data);
+         setInEditMode(false);
+         
+      }catch(error){}
+     
 
-    if(pathUserName===loggedInUsername){
-        message="we can edit";
-    };
+   }
+      const pendingAPiCall=useApiProgress('put',`/api/1.0/users/${username}`);
+   
+
+   
 
    return(    
      <div className="card text-center">
@@ -45,26 +72,36 @@ const ProfileCard = props => {
                <h3>
                   {name}@{username}
                </h3>
-               <button className='btn btn-success d-inline-flex' onClick={()=>{setInEditMode(true)}}>
-                  <span className='material-icons'>edit</span>
-                  {t('Edit')}
-               </button>
+               {
+                  editable && (<>
+                   <button className='btn btn-success d-inline-flex' onClick={()=>{setInEditMode(true)}}>
+                     <span className='material-icons'>edit</span>
+                     {t('Edit')}
+                  </button>
+                  </>)
+               }
+              
                </div>
             )}
 
          {inEditMode &&(
-            <div>
+            <div className='container'>
                <Input label={t('Change Display Name')} defaultValue={name} onChange={(event)=>{setUpdatedDisplaayName(event.target.value) }}/>
 
                <div className='container mt-4'>
-                  <button className='btn btn-danger d-inline-flex me-2' onClick={()=>{setInEditMode(false)}} >
+                 
+                  <button className='btn btn-danger d-inline-flex me-2' onClick={()=>{setInEditMode(false)}} disabled={pendingAPiCall} >
                      <span className='material-icons'>close</span>
                      {t('Cancel')}
                   </button>
-                  <button className='btn btn-success d-inline-flex' onClick={onClickSave} >
-                  <span className="material-icons">save</span>
-                     {t('Save')}
-                  </button>
+                 
+                 
+                  <ButtonWithProgress className='btn btn-primary d-inline-flex me-2' onClick={onClickSave} pendingApiCall={pendingAPiCall} disabled={pendingAPiCall} text= {<>
+                     <span className="material-icons">save</span>
+                     {t('Save')}</>
+                  }/>
+                     
+                 
                </div>
             </div>
          )

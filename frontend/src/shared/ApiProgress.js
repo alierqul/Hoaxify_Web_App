@@ -1,7 +1,7 @@
 import  { useState,useEffect } from 'react';
 import axios from 'axios';
 
-export const useApiProgress = (apiPath)=>{
+export const useApiProgress = (apiMethod,apiPath)=>{
     const [pendingApiCall,setPendingApiCall]=useState(false);
     useEffect(()=>{
         let requestInterceptor;
@@ -10,25 +10,28 @@ export const useApiProgress = (apiPath)=>{
         const registerInterceptors=()=>{
             //istek gönderildiğinde çalışacak method.  
                             
-            requestInterceptor= axios.interceptors.request.use(request=>{           
-                updateApiCAllFor(request.url,true);            
+            requestInterceptor= axios.interceptors.request.use(request=>{     
+                const {url, method}= request;     
+                updateApiCAllFor(method,url,true);            
                 return request;
             })
                 
             responseInterceptor= axios.interceptors.response.use(response=>{
-                updateApiCAllFor(response.config.url,false);       
+                const {url, method}= response.config; 
+                updateApiCAllFor(method,url,false);       
                 return response;
             },error=>{
-                updateApiCAllFor(error.config.url,false);       
+                const {url, method}= error.config; 
+                updateApiCAllFor(method,url,false);       
                 throw error;  
             });
         }
 
         registerInterceptors();
 
-        const updateApiCAllFor=(url,inProgress)=>{
+        const updateApiCAllFor=(method,url,inProgress)=>{
 
-            if(url.startsWith(apiPath)){
+            if(method===apiMethod && url.startsWith(apiPath)){
                 setPendingApiCall(inProgress);
             }
         }
@@ -42,7 +45,7 @@ export const useApiProgress = (apiPath)=>{
         return function unmount(){
             unRegisterInterceptors();
         }
-    },[apiPath]);
+    },[apiPath,apiMethod]);
     return pendingApiCall;
 }
 

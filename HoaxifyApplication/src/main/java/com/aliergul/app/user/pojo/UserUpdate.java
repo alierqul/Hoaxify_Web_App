@@ -1,4 +1,4 @@
-package com.aliergul.app.dao.user.pojo;
+package com.aliergul.app.user.pojo;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
