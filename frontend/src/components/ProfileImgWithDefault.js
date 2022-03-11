@@ -1,25 +1,26 @@
 import React from 'react';
-import defaultProfileIcon from '../assets/profile.png';
+import defaultPicture from '../assets/profile.png';
 
 const ProfileImgWithDefault = props => {
-    const {user,size} = props;
-    const {username, image} = user;
+  const { image, tempImage } = props;
 
-    let imageSource=defaultProfileIcon;
-    if(image){
-     imageSource=image;
-     }
-
-    return (
-        <img className='rounded-circle me-4 shadow'
-        width={size}
-        height={size}
-
-        alt={`${username} profile`} 
-        src={imageSource} 
-        
-        /> 
-    );
+  let imageSource = defaultPicture;
+ if(image){
+   imageSource="images/"+image;
+ }
+  return (
+    <img
+      alt={`Profile`}
+      src={ tempImage || imageSource}
+      {...props}
+      onError={event => {
+        event.target.src = defaultPicture;
+      }}
+      onError={function (event){
+        event.target.src=defaultPicture;
+      }}
+    />
+  );
 };
 
 export default ProfileImgWithDefault;

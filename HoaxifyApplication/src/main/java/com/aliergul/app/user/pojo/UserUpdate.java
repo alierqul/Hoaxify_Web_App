@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data
 public class UserUpdate {
-  @NotNull
-  @Size(min = 4, max=255)
+
   private String name;
+
+  private String image;
   
  
 }

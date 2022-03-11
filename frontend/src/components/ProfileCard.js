@@ -12,15 +12,17 @@ import ButtonWithProgress from './ButtonWithProgress';
 const ProfileCard = props => {
    const [inEditMode,setInEditMode]=useState(false);
    const [updatedDisplayName,setUpdatedDisplaayName]=useState();
+   const {loggedInUsername}=useSelector(store=>({loggedInUsername:store.username}));
    const routePArams=useParams();
+   const pathUserName = routePArams.username;
    const [user,setUser]=useState({});
    const [editable,setEditable]=useState(false);
-   const {loggedInUsername}=useSelector(store=>({loggedInUsername:store.username}));
+   const [newImage,setNewImage]=useState();
    useEffect(()=>{
       setUser(props.user);
    },[props.user]);
 
-   const pathUserName = routePArams.username;
+   
    useEffect(()=>{
      
       setEditable(pathUserName===loggedInUsername);
@@ -32,20 +34,26 @@ const ProfileCard = props => {
     const {username, name, image}=user;
     const {t}=useTranslation();
    
-    let message= "We Connot Edit";
-    let defaultName=name;
 
     useEffect(()=>{
      if(!inEditMode){
         setUpdatedDisplaayName(undefined);
+        setNewImage(undefined);
      }else{
         setUpdatedDisplaayName(name);
      }
     },[inEditMode,name]);
 
    const onClickSave=async ()=>{
+      
+      let image;
+      if(newImage){
+         const imageBase64Only = newImage.split(',');
+         image=imageBase64Only[1];
+      }
       const body={
-         name:updatedDisplayName
+         name:updatedDisplayName,
+         image
       };
       try{
          const response=await updateUser(username,body);
@@ -58,13 +66,30 @@ const ProfileCard = props => {
    }
       const pendingAPiCall=useApiProgress('put',`/api/1.0/users/${username}`);
    
-
+      const changePhotoFile=(event)=>{
+         if(event.target.files.length <1){
+            return;
+         }
+         const file = event.target.files[0];
+         const fileReader=new FileReader();
+         fileReader.onloadend =()=>{
+            setNewImage(fileReader.result);
+         };
+         fileReader.readAsDataURL(file);
+      };
    
 
    return(    
      <div className="card text-center">
      <div className='card-header'>
-    <ProfileImgWithDefault user={user} size='200'/>
+    <ProfileImgWithDefault 
+      className='rounded-circle shadow'    
+      width="200" height="200"
+      alt={`${username} profile`}
+      image={image}
+      tempImage={newImage}
+     
+    />
      </div>
         <div className='card-body'>
              {!inEditMode && (
@@ -85,10 +110,12 @@ const ProfileCard = props => {
             )}
 
          {inEditMode &&(
-            <div className='container'>
+            <div className='card'>
                <Input label={t('Change Display Name')} defaultValue={name} onChange={(event)=>{setUpdatedDisplaayName(event.target.value) }}/>
 
-               <div className='container mt-4'>
+               <input className='form-control center mt-2' type='file' onChange={changePhotoFile}/>
+               
+               <div className='mt-4 text-center'>
                  
                   <button className='btn btn-danger d-inline-flex me-2' onClick={()=>{setInEditMode(false)}} disabled={pendingAPiCall} >
                      <span className='material-icons'>close</span>

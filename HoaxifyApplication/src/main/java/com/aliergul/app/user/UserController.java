@@ -71,6 +71,7 @@ public class UserController {
 	@PreAuthorize("#username == principal.username")
 	public UserPojo updateUser(@RequestBody UserUpdate updateUser, @PathVariable String username, @CurrentUser UserEntity loggedInUser) {
 		UserEntity user =userService.updateUser(username,updateUser);
+
 		return new UserPojo(user);
 
 
