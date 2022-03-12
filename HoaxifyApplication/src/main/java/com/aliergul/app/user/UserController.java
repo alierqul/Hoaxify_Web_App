@@ -69,7 +69,7 @@ public class UserController {
 	//Çözüm II :
 	@PutMapping("/users/{username}")
 	@PreAuthorize("#username == principal.username")
-	public UserPojo updateUser(@RequestBody UserUpdate updateUser, @PathVariable String username, @CurrentUser UserEntity loggedInUser) {
+	public UserPojo updateUser(@Valid @RequestBody UserUpdate updateUser, @PathVariable String username, @CurrentUser UserEntity loggedInUser) {
 		UserEntity user =userService.updateUser(username,updateUser);
 
 		return new UserPojo(user);

@@ -18,6 +18,8 @@ const ProfileCard = props => {
    const [user,setUser]=useState({});
    const [editable,setEditable]=useState(false);
    const [newImage,setNewImage]=useState();
+   const [validationErrors,setValidationErrors]=useState({});
+
    useEffect(()=>{
       setUser(props.user);
    },[props.user]);
@@ -44,6 +46,23 @@ const ProfileCard = props => {
      }
     },[inEditMode,name]);
 
+    useEffect(()=>{
+      setValidationErrors(preValidationErrors=>
+        ({
+            ...preValidationErrors,
+            name:undefined
+         })
+      )
+    },[updatedDisplayName]);
+
+    useEffect(()=>{
+      setValidationErrors(preValidationErrors=>
+        ({
+            ...preValidationErrors,
+            image:undefined
+         })
+      )
+    },[newImage]);
    const onClickSave=async ()=>{
       
       let image;
@@ -60,7 +79,9 @@ const ProfileCard = props => {
          setUser(response.data);
          setInEditMode(false);
          
-      }catch(error){}
+      }catch(error){
+         setValidationErrors(error.response.data.validationErrors)
+      }
      
 
    }
@@ -90,6 +111,7 @@ const ProfileCard = props => {
       tempImage={newImage}
      
     />
+
      </div>
         <div className='card-body'>
              {!inEditMode && (
@@ -110,19 +132,27 @@ const ProfileCard = props => {
             )}
 
          {inEditMode &&(
-            <div className='card'>
-               <Input label={t('Change Display Name')} defaultValue={name} onChange={(event)=>{setUpdatedDisplaayName(event.target.value) }}/>
-
-               <input className='form-control center mt-2' type='file' onChange={changePhotoFile}/>
-               
-               <div className='mt-4 text-center'>
+            <div className='container'>
+               <div>
+               <Input label={t('Change Display Name')} defaultValue={name} 
+               onChange={(event)=>{
+                  setUpdatedDisplaayName(event.target.value) 
+                 
+               }}
+               error={validationErrors.name}
+               />
+               </div>
+               <div className='float-start mt-2'>
+               <Input error={validationErrors.image}  type='file' onChange={changePhotoFile}/>
+               </div>
+              
+               <div className='float-end mt-2'>
                  
                   <button className='btn btn-danger d-inline-flex me-2' onClick={()=>{setInEditMode(false)}} disabled={pendingAPiCall} >
                      <span className='material-icons'>close</span>
                      {t('Cancel')}
                   </button>
-                 
-                 
+                                  
                   <ButtonWithProgress className='btn btn-primary d-inline-flex me-2' onClick={onClickSave} pendingApiCall={pendingAPiCall} disabled={pendingAPiCall} text= {<>
                      <span className="material-icons">save</span>
                      {t('Save')}</>
