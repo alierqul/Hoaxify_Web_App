@@ -27,7 +27,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     //BasicAuthenticationEntryPoint.class;
     //Browser da herhangi bir pop-up login inin gelmesini engelleyen method.
     http.httpBasic().authenticationEntryPoint(new AuthEntryPoint());
-    
+
+    //H2 console login olarak giriş yapabilmemizi sağlayan ayar
+    http.headers().frameOptions().disable();
+
     http
     .authorizeHttpRequests()
             .antMatchers(HttpMethod.POST, "/api/1.0/auth").authenticated()

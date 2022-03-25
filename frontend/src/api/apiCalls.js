@@ -10,8 +10,6 @@ export const login = creds => {
  };
 
 
-
-
  export const getUsers = (page=0,size=3) =>{
    return axios.get(`/api/1.0/users?page=${page}&size=${size}`);
 };
@@ -32,6 +30,9 @@ export const setAuthorizationHeader = ({isLoggedIn, username, password }) => {
 
  export const updateUser= (username,body) =>{
   return axios.put(`/api/1.0/users/${username}`,body);
+};
+ export const postHoax= (hoax) =>{
+  return axios.post(`/api/1.0/hoaxes`,hoax);
 };
 
 
