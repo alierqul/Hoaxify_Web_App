@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ProfileImgWithDefault from './ProfileImgWithDefault';
 import { useTranslation } from 'react-i18next';
 import Input from './input';
 import {updateUser} from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
+import { updateSuccess } from '../redux/authAction';
 //rsc snippet kısayolu
 
 const ProfileCard = props => {
@@ -63,6 +64,7 @@ const ProfileCard = props => {
          })
       )
     },[newImage]);
+    const dispatch=useDispatch();
    const onClickSave=async ()=>{
       
       let image;
@@ -78,7 +80,7 @@ const ProfileCard = props => {
          const response=await updateUser(username,body);
          setUser(response.data);
          setInEditMode(false);
-         
+         dispatch(updateSuccess(response.data));
       }catch(error){
          setValidationErrors(error.response.data.validationErrors)
       }

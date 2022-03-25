@@ -33,7 +33,7 @@ public class FileService {
     public String writeBase64EncodedStringToFile(String image) throws IOException {
         String fileName=geretadeRandomName();
 
-        File target = new File(appConfiguration.getUploadPath()+"/"+fileName);
+                    File target = new File(appConfiguration.getUploadPath()+"/"+fileName);
         OutputStream outputStream = new FileOutputStream(target);
         byte[] base64encoded = Base64.getDecoder().decode(image);
         outputStream.write(base64encoded);

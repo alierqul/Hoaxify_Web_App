@@ -12,6 +12,7 @@ public class UserUpdate {
   @NotNull(message="{hoaxify.constraint.username.NotNull.message}")
   @Size(min = 4, max=255 )
   private String name;
+
   @FileType(types = {"jpeg", "png"})
   private String image;
   

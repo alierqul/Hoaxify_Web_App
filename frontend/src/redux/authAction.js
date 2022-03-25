@@ -15,6 +15,14 @@ export const loginSuccess =(authState)=>{
 
      };
  };
+export const updateSuccess =(payload)=>{
+    return {
+         type:ACTIONS.UPDATE_SUCCESS,
+         payload
+       
+
+     };
+ };
 
  export const loginHandler=(credentials)=>{
      return async (dispatch)=>{

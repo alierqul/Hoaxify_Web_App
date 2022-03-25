@@ -16,9 +16,16 @@ const defaultState={
     return {
       ...action.payload,
       isLoggedIn:true
-    }
+    };
+  }
+   if(action.type === ACTIONS.UPDATE_SUCCESS){
+    return {
+      ...state,
+      ...action.payload
+      
+    };
   }
     return state;
-  };
+  }
 
   export default authReducer;
