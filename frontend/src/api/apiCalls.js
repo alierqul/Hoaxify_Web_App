@@ -35,6 +35,10 @@ export const setAuthorizationHeader = ({isLoggedIn, username, password }) => {
   return axios.post(`/api/1.0/hoaxes`,hoax);
 };
 
+export const getHoaxes = (page=0,size=10) =>{
+  return axios.get(`/api/1.0/hoaxes?page=${page}&size=${size}`);
+};
+
 
 export const changeLanguage = language => {
    axios.defaults.headers['accept-language'] = language;
