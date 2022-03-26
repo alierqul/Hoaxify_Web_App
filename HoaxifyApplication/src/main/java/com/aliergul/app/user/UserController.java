@@ -2,14 +2,11 @@ package com.aliergul.app.user;
 
 
 
-import com.aliergul.app.error.ApiError;
 import com.aliergul.app.shared.GenericResponse;
-import com.aliergul.app.user.pojo.UserPojo;
-import com.aliergul.app.user.pojo.UserUpdate;
-import org.apache.coyote.Response;
+import com.aliergul.app.user.pojo.UserVM;
+import com.aliergul.app.user.pojo.UserUpdateVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,24 +52,24 @@ public class UserController {
 	}
 	
 	@GetMapping("/users")
-	public Page<UserPojo> getUser(Pageable page, @CurrentUser UserEntity user ){
+	public Page<UserVM> getUser(Pageable page, @CurrentUser UserEntity user ){
 		 
-		return userService.getUsers(page,user).map(UserPojo::new);
+		return userService.getUsers(page,user).map(UserVM::new);
 	}
 	
 	@GetMapping("/users/{username}")
-	public UserPojo getSingleUser(@PathVariable String username) {
+	public UserVM getSingleUser(@PathVariable String username) {
 		UserEntity user=userService.getByUsername(username);
-		return new UserPojo(user);
+		return new UserVM(user);
 	}
 	/** ----------------------------------- UPDATE ------------------------------------- */
 	//Çözüm II :
 	@PutMapping("/users/{username}")
 	@PreAuthorize("#username == principal.username")
-	public UserPojo updateUser(@Valid @RequestBody UserUpdate updateUser, @PathVariable String username, @CurrentUser UserEntity loggedInUser) {
+	public UserVM updateUser(@Valid @RequestBody UserUpdateVM updateUser, @PathVariable String username, @CurrentUser UserEntity loggedInUser) {
 		UserEntity user =userService.updateUser(username,updateUser);
 
-		return new UserPojo(user);
+		return new UserVM(user);
 
 
 	}

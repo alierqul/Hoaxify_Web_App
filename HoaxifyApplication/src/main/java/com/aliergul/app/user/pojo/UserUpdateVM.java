@@ -7,7 +7,7 @@ import com.aliergul.app.shared.FileType;
 import lombok.Data;
 
 @Data
-public class UserUpdate {
+public class UserUpdateVM {
 
   @NotNull(message="{hoaxify.constraint.username.NotNull.message}")
   @Size(min = 4, max=255 )

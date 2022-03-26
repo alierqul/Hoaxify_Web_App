@@ -3,7 +3,7 @@ package com.aliergul.app.user;
 
 import com.aliergul.app.error.NotFoundException;
 import com.aliergul.app.file.FileService;
-import com.aliergul.app.user.pojo.UserUpdate;
+import com.aliergul.app.user.pojo.UserUpdateVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -11,11 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Base64;
 
 
 @Service
@@ -59,7 +55,7 @@ public UserEntity getByUsername(String username) {
 
 
 
-public UserEntity updateUser(String username, UserUpdate updateUser) {
+public UserEntity updateUser(String username, UserUpdateVM updateUser) {
 	UserEntity inDB=getByUsername(username);
 	inDB.setName(updateUser.getName());
 

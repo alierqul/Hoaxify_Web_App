@@ -1,53 +1,59 @@
 import  { useState,useEffect } from 'react';
 import axios from 'axios';
 
-export const useApiProgress = (apiMethod,apiPath)=>{
+export const useApiProgress = (apiMethod,apiPath,strictPath)=>{
     const [pendingApiCall,setPendingApiCall]=useState(false);
+
     useEffect(()=>{
         let requestInterceptor;
         let responseInterceptor;
 
-        const registerInterceptors=()=>{
+        const updateApiCAllFor=(method,url,inProgress)=>{
+            if(method !== apiMethod){
+                return;
+            }
+
+            if(strictPath && url === apiPath){
+                setPendingApiCall(inProgress);
+            }else if(!strictPath && url.startsWith(apiPath)){
+                setPendingApiCall(inProgress);
+            }
+        } ;      
+
+        const registerInterceptors= () =>{
             //istek gönderildiğinde çalışacak method.  
-                            
+            
             requestInterceptor= axios.interceptors.request.use(request=>{     
                 const {url, method}= request;     
                 updateApiCAllFor(method,url,true);            
                 return request;
-            })
+            });
                 
-            responseInterceptor= axios.interceptors.response.use(response=>{
+            responseInterceptor= axios.interceptors.response.use( response =>{
                 const {url, method}= response.config; 
                 updateApiCAllFor(method,url,false);       
                 return response;
-            },error=>{
+            },error =>{
                 const {url, method}= error.config; 
                 updateApiCAllFor(method,url,false);       
                 throw error;  
             });
-        }
-
-        registerInterceptors();
-
-        const updateApiCAllFor=(method,url,inProgress)=>{
-
-            if(method===apiMethod && url.startsWith(apiPath)){
-                setPendingApiCall(inProgress);
-            }
-        }
+        };
 
         const unRegisterInterceptors=()=>{
             axios.interceptors.request.eject(requestInterceptor);
-            axios.interceptors.request.eject(responseInterceptor);
+            axios.interceptors.response.eject(responseInterceptor);
         }
-        
+
+        registerInterceptors();  
        
         return function unmount(){
             unRegisterInterceptors();
-        }
-    },[apiPath,apiMethod]);
+        };
+    },[apiPath,apiMethod,strictPath]);
+    
     return pendingApiCall;
-}
+};
 
 
 
