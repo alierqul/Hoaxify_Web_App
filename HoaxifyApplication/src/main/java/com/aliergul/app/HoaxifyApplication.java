@@ -32,7 +32,8 @@ public class HoaxifyApplication implements CommandLineRunner {
 			user.setName("display"+i);
 			user.setPassword("P4ssword");
 			service.save(user);
-			for(int J=1;J<=2;J++){
+			int a= (int) (Math.random()*25);
+			for(int J=1;J<=a;J++){
 				Hoax hoax=new Hoax();
 				hoax.setContent("Hoax: [ "+J+" ] from user [ "+i+" ]");
 				hoaxService.save(hoax, user);

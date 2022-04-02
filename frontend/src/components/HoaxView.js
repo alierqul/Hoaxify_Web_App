@@ -5,7 +5,7 @@ import {format} from 'timeago.js';
 import { useTranslation } from 'react-i18next';
 const HoaxView = (props) => {
     const{hoax}=props;
-    const{user,content,timestamp}=hoax;
+    const{user,content,timestamp,id}=hoax;
     const{name,username,image}=user;
     const{i18n}=useTranslation();
     const formated= format(timestamp,i18n.language);
@@ -24,7 +24,7 @@ const HoaxView = (props) => {
             </div>
         </div>
         <div className='flex-fill ps-5'>
-            {content}                       
+            {content} -[{id}]                       
         </div>
         <span className='ms-auto'>{formated}</span>    
         </div>

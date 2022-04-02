@@ -110,7 +110,7 @@ const ProfileCard = props => {
       width="200" height="200"
       alt={`${username} profile`}
       image={image}
-      tempImage={newImage}
+      tempimage={newImage}
      
     />
 

@@ -2,7 +2,7 @@ import React from 'react';
 import defaultPicture from '../assets/profile.png';
 
 const ProfileImgWithDefault = props => {
-  const { image, tempImage } = props;
+  const { image, tempimage } = props;
 
   let imageSource = defaultPicture;
  if(image){
@@ -11,7 +11,7 @@ const ProfileImgWithDefault = props => {
   return (
     <img
       alt={`Profile`}
-      src={ tempImage || imageSource}
+      src={ tempimage || imageSource}
       {...props}
       onError={event => {
         event.target.src = defaultPicture;

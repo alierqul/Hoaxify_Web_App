@@ -6,7 +6,7 @@ import {useDispatch,useSelector} from 'react-redux';
 import { logOutSuccess } from '../redux/authAction';
 import ProfileImgWithDefault from '../components/ProfileImgWithDefault';
 
-const TopBar = props => {
+const TopBar = (props) => {
     const { t }=useTranslation();
   
     const { username, isLoggedIn, name, image } = useSelector(store => ({
@@ -42,8 +42,8 @@ const TopBar = props => {
     let links= (
         <ul className="navbar-nav ms-auto">
             
-            <Link className='nav-link' to="/login"><li>{t('Login')}</li></Link>
-            <Link className='nav-link' to="/register"> <li>{t('Register')}</li></Link>
+            <li><Link className='nav-link' to="/login">{t('Login')}</Link></li>
+            <li><Link className='nav-link' to="/register"> {t('Register')}</Link></li>
         </ul>
     );
 
@@ -61,9 +61,9 @@ const TopBar = props => {
                     <span className="material-icons me-2">
                         person
                     </span>
-                        <li>{t('My Profile')}</li></Link>                        
+                        {t('My Profile')}</Link>                        
                     <span className='dropdown-item d-flex p-2' onClick = {onLogoutSuccess} style={{cursor:'pointer'}}>                    
-                    <span class="material-icons d-flex me-2 text-danger">power_settings_new</span>    
+                    <span className="material-icons d-flex me-2 text-danger">power_settings_new</span>    
                         {t('Logout')}
                     </span>
 
