@@ -2,6 +2,7 @@ package com.aliergul.app;
 
 import com.aliergul.app.hoax.Hoax;
 import com.aliergul.app.hoax.HoaxService;
+import com.aliergul.app.hoax.vm.HoaxSubmitVM;
 import com.aliergul.app.user.CurrentUser;
 import com.aliergul.app.user.UserEntity;
 import com.aliergul.app.user.UserService;
@@ -34,7 +35,7 @@ public class HoaxifyApplication implements CommandLineRunner {
 			service.save(user);
 			int a= (int) (Math.random()*25);
 			for(int J=1;J<=a;J++){
-				Hoax hoax=new Hoax();
+				HoaxSubmitVM hoax=new HoaxSubmitVM();
 				hoax.setContent("Hoax: [ "+J+" ] from user [ "+i+" ]");
 				hoaxService.save(hoax, user);
 			}

@@ -27,6 +27,9 @@ spring:
         max-page-size: 100
         page-parameter: page
         size-parameter: size
+  servlet:
+    multipart:
+      max-file-size: 10MB
 hoaxify:
   upload-path: picture-storage
 

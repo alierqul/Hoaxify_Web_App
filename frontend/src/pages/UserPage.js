@@ -44,7 +44,14 @@ const UserPage = props =>{
             </div>
         </div>
         );
-    }else
+    }
+
+    if(pendingApiCall || user.username!==username ){
+        return(
+            <Spinner/>
+        );
+    }
+    
     return (
         <div className="container">
             <div className='row'>
@@ -58,11 +65,7 @@ const UserPage = props =>{
             
         </div>
     );
-    if(pendingApiCall || user.username!==username ){
-        return(
-            <Spinner/>
-        );
-    }
+  
 
     
 };

@@ -1,5 +1,6 @@
 package com.aliergul.app.hoax;
 
+import com.aliergul.app.hoax.vm.HoaxSubmitVM;
 import com.aliergul.app.hoax.vm.HoaxVM;
 import com.aliergul.app.shared.GenericResponse;
 import com.aliergul.app.user.CurrentUser;
@@ -27,7 +28,7 @@ public class HoaxController {
     }
 
     @PostMapping("/hoaxes")
-    GenericResponse saveHoax(@RequestBody @Valid Hoax hoax , @CurrentUser UserEntity user){
+    GenericResponse saveHoax(@RequestBody @Valid HoaxSubmitVM hoax , @CurrentUser UserEntity user){
         service.save(hoax,user);
         return new GenericResponse("Hoax is Saved.");
     }

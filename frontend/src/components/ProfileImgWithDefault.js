@@ -6,7 +6,7 @@ const ProfileImgWithDefault = props => {
 
   let imageSource = defaultPicture;
  if(image){
-   imageSource="images/"+image;
+   imageSource="images/profile/"+image;
  }
   return (
     <img
@@ -15,11 +15,7 @@ const ProfileImgWithDefault = props => {
       {...props}
       onError={event => {
         event.target.src = defaultPicture;
-      }}
-      
-      onError={ (event)=>{
-        event.target.src=defaultPicture;
-      }}
+      }}          
     />
   );
 };

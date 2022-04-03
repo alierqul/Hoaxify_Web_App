@@ -67,7 +67,7 @@ public UserEntity updateUser(String username, UserUpdateVM updateUser) {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		fileService.deleteFile(oldImageName);
+		fileService.deleteProfileFile(oldImageName);
 	}
 	return userRepository.save(inDB);
 }

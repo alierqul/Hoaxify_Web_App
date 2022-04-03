@@ -61,6 +61,9 @@ export const getNewHoaxes = (username,id) =>{
  
 };
 
+export const postHoaxAttachment = attachment => {
+  return axios.post('/api/1.0/hoax-attachments', attachment);
+};
 
 
 export const changeLanguage = language => {
